@@ -13,6 +13,7 @@ local function OnEvent(_, event, ...)
         if (name == ...) then
             hooksecurefunc(ClassPowerBar, "Setup", Initialize)
             hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
+            hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
             hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
         end
     end
@@ -26,6 +27,7 @@ local playerClass, englishClass = UnitClass("player");
 function Initialize()
     print(ShowHidePowerBars)
     if ShowHidePowerBars == 'show' then
+        ShowPowerBars()
     elseif ShowHidePowerBars == 'hide' then
         HidePowerBars()
     end
@@ -38,6 +40,8 @@ function HidePowerBars()
         ComboPointPlayerFrame:Hide()
     elseif playerClass == 'Warlock' then
         WarlockPowerFrame:Hide()
+    elseif playerClass == 'Druid' then
+        ComboPointDruidPlayerFrame:Hide()
     end
 end
 
@@ -48,19 +52,21 @@ function ShowPowerBars()
         ComboPointPlayerFrame:Show()
     elseif playerClass == 'Warlock' then
         WarlockPowerFrame:Show()
+    elseif playerClass == 'Druid' then
+        ComboPointDruidPlayerFrame:Show()
     end
 end
 
 SLASH_BLIZZHUD1 = '/bhh';
 function SlashCmdList.BLIZZHUD(msg)
-    if (msg == "show") then
-        ShowHidePowerBars = "show"
-        ShowPowerBars()
-    elseif (msg == "hide") then
-        ShowHidePowerBars = "hide"
-        HidePowerBars()
-    else
-        print("Must be a value of show or hide, e.g. /bhh show or /bhh hide")
-    end
+if (msg == "show") then
+ShowHidePowerBars = "show"
+ShowPowerBars()
+elseif (msg == "hide") then
+ShowHidePowerBars = "hide"
+HidePowerBars()
+else
+print("Must be a value of show or hide, e.g. /bhh show or /bhh hide")
+end
 end
 
