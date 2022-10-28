@@ -11,12 +11,13 @@ namespace.BlizzHUD_Helper = BlizzHUD_Helper
 local function OnEvent(_, event, ...)
     if event == 'ADDON_LOADED' then
         if (name == ...) then
-            --hooksecurefunc(ClassPowerBar, "Setup", Initialize)
-            --hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
-            --hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
-            --hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
+            hooksecurefunc(ClassPowerBar, "Setup", Initialize)
+            hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
+            hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
+            hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
             hooksecurefunc(MonkLightEnergyMixin, "Setup", Initialize)
             hooksecurefunc(MonkHarmonyBarFrame, "Setup", Initialize)
+            hooksecurefunc(DeathKnightResourceOverlayFrame, "Setup", Initialize)
         end
     end
 end
@@ -45,8 +46,9 @@ function HidePowerBars()
     elseif playerClass == 'Druid' then
         ComboPointDruidPlayerFrame:Hide()
     elseif playerClass == 'Monk' then
-        print('hi')
         MonkHarmonyBarFrame:Hide()
+    elseif playerClass == 'Death Knight' then
+        RuneFrame:Hide()
     end
 end
 
@@ -60,8 +62,9 @@ function ShowPowerBars()
     elseif playerClass == 'Druid' then
         ComboPointDruidPlayerFrame:Show()
     elseif playerClass == 'Monk' then
-        print('hi')
         MonkHarmonyBarFrame:Show()
+    elseif playerClass == 'Death Knight' then
+        RuneFrame:Show()
     end
 end
 
