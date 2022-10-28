@@ -12,6 +12,7 @@ local function OnEvent(_, event, ...)
     if event == 'ADDON_LOADED' then
         if (name == ...) then
             hooksecurefunc(ClassPowerBar, "Setup", Initialize)
+            hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
         end
     end
 end
@@ -21,10 +22,9 @@ frame:RegisterEvent('ADDON_LOADED')
 
 local playerClass, englishClass = UnitClass("player");
 
-function Initialize(self)
+function Initialize()
     print(ShowHidePowerBars)
     if ShowHidePowerBars == 'show' then
-
     elseif ShowHidePowerBars == 'hide' then
         HidePowerBars()
     end
@@ -33,12 +33,16 @@ end
 function HidePowerBars()
     if playerClass == 'Paladin' then
         PaladinPowerBarFrame:Hide()
+    elseif playerClass == 'Rogue' then
+        ComboPointPlayerFrame:Hide()
     end
 end
 
 function ShowPowerBars()
     if playerClass == 'Paladin' then
         PaladinPowerBarFrame:Show()
+    elseif playerClass == 'Rogue' then
+        ComboPointPlayerFrame:Show()
     end
 end
 
