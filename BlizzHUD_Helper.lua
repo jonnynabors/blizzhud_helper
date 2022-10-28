@@ -13,6 +13,7 @@ local function OnEvent(_, event, ...)
         if (name == ...) then
             hooksecurefunc(ClassPowerBar, "Setup", Initialize)
             hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
+            hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
         end
     end
 end
@@ -35,6 +36,8 @@ function HidePowerBars()
         PaladinPowerBarFrame:Hide()
     elseif playerClass == 'Rogue' then
         ComboPointPlayerFrame:Hide()
+    elseif playerClass == 'Warlock' then
+        WarlockPowerFrame:Hide()
     end
 end
 
@@ -43,6 +46,8 @@ function ShowPowerBars()
         PaladinPowerBarFrame:Show()
     elseif playerClass == 'Rogue' then
         ComboPointPlayerFrame:Show()
+    elseif playerClass == 'Warlock' then
+        WarlockPowerFrame:Show()
     end
 end
 
