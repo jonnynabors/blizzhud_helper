@@ -11,10 +11,12 @@ namespace.BlizzHUD_Helper = BlizzHUD_Helper
 local function OnEvent(_, event, ...)
     if event == 'ADDON_LOADED' then
         if (name == ...) then
-            hooksecurefunc(ClassPowerBar, "Setup", Initialize)
-            hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
-            hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
-            hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
+            --hooksecurefunc(ClassPowerBar, "Setup", Initialize)
+            --hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
+            --hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
+            --hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
+            hooksecurefunc(MonkLightEnergyMixin, "Setup", Initialize)
+            hooksecurefunc(MonkHarmonyBarFrame, "Setup", Initialize)
         end
     end
 end
@@ -42,6 +44,9 @@ function HidePowerBars()
         WarlockPowerFrame:Hide()
     elseif playerClass == 'Druid' then
         ComboPointDruidPlayerFrame:Hide()
+    elseif playerClass == 'Monk' then
+        print('hi')
+        MonkHarmonyBarFrame:Hide()
     end
 end
 
@@ -54,19 +59,22 @@ function ShowPowerBars()
         WarlockPowerFrame:Show()
     elseif playerClass == 'Druid' then
         ComboPointDruidPlayerFrame:Show()
+    elseif playerClass == 'Monk' then
+        print('hi')
+        MonkHarmonyBarFrame:Show()
     end
 end
 
 SLASH_BLIZZHUD1 = '/bhh';
 function SlashCmdList.BLIZZHUD(msg)
-if (msg == "show") then
-ShowHidePowerBars = "show"
-ShowPowerBars()
-elseif (msg == "hide") then
-ShowHidePowerBars = "hide"
-HidePowerBars()
-else
-print("Must be a value of show or hide, e.g. /bhh show or /bhh hide")
-end
+    if (msg == "show") then
+        ShowHidePowerBars = "show"
+        ShowPowerBars()
+    elseif (msg == "hide") then
+        ShowHidePowerBars = "hide"
+        HidePowerBars()
+    else
+        print("Must be a value of show or hide, e.g. /bhh show or /bhh hide")
+    end
 end
 
