@@ -15,7 +15,7 @@ local function OnEvent(_, event, ...)
             hooksecurefunc(ComboPointPlayerFrame, "Setup", Initialize)
             hooksecurefunc(ComboPointDruidPlayerFrame, "Setup", Initialize)
             hooksecurefunc(WarlockShardMixin, "Setup", Initialize)
-            hooksecurefunc(MonkLightEnergyMixin, "Setup", Initialize)
+            hooksecurefunc(MonkLightEnergyMixin, "Setup", Initialize) -- Think unneccessary
             hooksecurefunc(MonkHarmonyBarFrame, "Setup", Initialize)
             hooksecurefunc(DeathKnightResourceOverlayFrame, "Setup", Initialize)
         end
@@ -28,7 +28,6 @@ frame:RegisterEvent('ADDON_LOADED')
 local playerClass, englishClass = UnitClass("player");
 
 function Initialize()
-    print(ShowHidePowerBars)
     if ShowHidePowerBars == 'show' then
         ShowPowerBars()
     elseif ShowHidePowerBars == 'hide' then
