@@ -76,7 +76,13 @@ function SlashCmdList.BLIZZHUD(msg)
         ShowHidePowerBars = "hide"
         HidePowerBars()
     else
-        print("Must be a value of show or hide, e.g. /bhh show or /bhh hide")
+        print("Hi")
+        BlizzHUD_Helper_Frame:Show()
     end
+end
+
+function BlizzHUD_Helper_OnLoad(something)
+    something.BlizzHUD_Helper_Frame:Show()
+    print("Loading...")
 end
 

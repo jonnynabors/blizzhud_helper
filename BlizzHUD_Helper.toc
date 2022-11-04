@@ -5,3 +5,4 @@
 ## Author: Jonny Nabors
 
 BlizzHUD_Helper.lua
+BlizzHUD_Helper_Config.xml

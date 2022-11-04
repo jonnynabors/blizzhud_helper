@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+    <Script file="BlizzHUD_Helper.lua"/>
+    <Frame name="BlizzHUD_Helper_Frame">
+        <Scripts>
+            <OnLoad>BlizzHUD_Helper_OnLoad();</OnLoad>
+            <OnEvent>BlizzHUD_Helper_OnEvent();</OnEvent>
+        </Scripts>
+
+    </Frame>
+</Ui>
