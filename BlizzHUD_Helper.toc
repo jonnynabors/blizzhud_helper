@@ -4,5 +4,6 @@
 ## SavedVariablesPerCharacter: ShowHidePowerBars
 ## Author: Jonny Nabors
 
+embeds.xml
+
 BlizzHUD_Helper.lua
-BlizzHUD_Helper_Config.xml
