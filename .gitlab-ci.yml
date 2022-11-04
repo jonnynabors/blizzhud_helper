@@ -7,9 +7,6 @@ variables:
 push release to wow interface:
   image: registry.gitlab.com/jonnynabors/blizzhud_helper
   stage: build
-  when: manual
-#  only:
-#    - tags
   except:
     - branches
   script:
