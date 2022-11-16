@@ -17,6 +17,7 @@ push release to wow interface:
     - upload_to_wow_interface.sh
 
 push release to curseforge:
+  when: never
   image: registry.gitlab.com/jonnynabors/blizzhud_helper
   stage: build
   only:
