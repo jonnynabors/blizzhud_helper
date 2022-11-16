@@ -2,9 +2,9 @@ stages:
   - build
 
 variables:
-  WOW_INTERFACE_DEPLOY_JOB: 'curl -H "x-api-token: $WOW_INTERFACE_TOKEN" -F "id=${WOW_INTERFACE_PROJECT_NUMBER}" -F "version=$CI_COMMIT_TAG" -F "compatible=10.0" -F "updatefile=BlizzHUD_Helper.zip" https://api.wowinterface.com/addons/update'
+  WOW_INTERFACE_DEPLOY_JOB: 'curl -H "x-api-token: $WOW_INTERFACE_TOKEN" https://api.wowinterface.com/addons/update -F "id=$WOW_INTERFACE_PROJECT_NUMBER" -F "version=$CI_COMMIT_TAG" -F "compatible=10.0" -F "updatefile=@BlizzHUD_Helper.zip"'
   LIST_ADDONS_JOB: 'curl -H "x-api-token: $WOW_INTERFACE_TOKEN" https://api.wowinterface.com/addons/list.json'
-  CURSE_UPLOAD_NEW_VERSION_JOB: 'curl -H "x-api-token: $CURSEFORGE_TOKEN" https://wow.curseforge.com/api/projects/$CURSEFORGE_PROJECT_ID/upload-file -F metadata="{\"changelog\":\"$CI_COMMIT_MESSAGE\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUDHelper.zip'
+  CURSE_UPLOAD_NEW_VERSION_JOB: 'curl -H "x-api-token: ${CURSEFORGE_TOKEN}" https://wow.curseforge.com/api/projects/${CURSEFORGE_PROJECT_ID}/upload-file -F metadata="{\"changelog\":\"$CI_COMMIT_MESSAGE\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUDHelper.zip'
 
 push release to wow interface:
   image: registry.gitlab.com/jonnynabors/blizzhud_helper
