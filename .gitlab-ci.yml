@@ -4,7 +4,7 @@ stages:
 variables:
   WOW_INTERFACE_DEPLOY_JOB: 'curl -H "x-api-token: $WOW_INTERFACE_TOKEN" -F "id=${WOW_INTERFACE_PROJECT_NUMBER}" -F "version=$CI_COMMIT_TAG" -F "compatible=10.0" -F "updatefile=BlizzHUD_Helper.zip" https://api.wowinterface.com/addons/update'
   LIST_ADDONS_JOB: 'curl -H "x-api-token: $WOW_INTERFACE_TOKEN" https://api.wowinterface.com/addons/list.json'
-  CURSE_UPLOAD_NEW_VERSION_JOB: 'curl -H "x-api-token: 19f01680-7c99-425f-a94f-db13202eace2" https://wow.curseforge.com/api/projects/694675/upload-file -F metadata="{\"changelog\":\"Add evoker support\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUDHelper.zip'
+  CURSE_UPLOAD_NEW_VERSION_JOB: 'curl -H "x-api-token: $CURSEFORGE_TOKEN" https://wow.curseforge.com/api/projects/$CURSEFORGE_PROJECT_ID/upload-file -F metadata="{\"changelog\":\"$CI_COMMIT_TAG_MESSAGE\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUDHelper.zip'
 
 push release to wow interface:
   image: registry.gitlab.com/jonnynabors/blizzhud_helper
@@ -17,3 +17,16 @@ push release to wow interface:
     - mkdir BlizzHUDHelper && cp -ar BlizzHUD_Helper.lua BlizzHUD_Helper.toc embeds.xml libs/ BlizzHUDHelper
     - zip -r BlizzHUDHelper.zip BlizzHUDHelper
     - $WOW_INTERFACE_DEPLOY_JOB
+
+push release to curseforge:
+  image: registry.gitlab.com/jonnynabors/blizzhud_helper
+  stage: build
+  only:
+    - tags
+  except:
+    - branches
+  script:
+    - env
+    - mkdir BlizzHUDHelper && cp -ar BlizzHUD_Helper.lua BlizzHUD_Helper.toc embeds.xml libs/ BlizzHUDHelper
+    - zip -r BlizzHUDHelper.zip BlizzHUDHelper
+    - $CURSE_UPLOAD_NEW_VERSION_JOB
