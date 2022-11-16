@@ -16,12 +16,12 @@ function BHH:ADDON_LOADED()
 end
 
 function BHH:OnEnable()
-    self:Hook(ClassPowerBar, "Setup", LoadPowerBars, true)
-    self:Hook(ComboPointPlayerFrame, "Setup", LoadPowerBars, true)
-    self:Hook(ComboPointDruidPlayerFrame, "Setup", LoadPowerBars, true)
-    self:Hook(WarlockShardMixin, "Setup", LoadPowerBars, true)
-    self:Hook(MonkHarmonyBarFrame, "Setup", LoadPowerBars, true)
-    self:Hook(DeathKnightResourceOverlayFrame, "Setup", LoadPowerBars, true)
+    self:SecureHook(ClassPowerBar, "Setup", LoadPowerBars) -- Required for Paladin, specifically swapping specs
+    self:SecureHook(ComboPointPlayerFrame, "Setup", LoadPowerBars) -- Required for Rogue, DK
+    self:SecureHook(MonkHarmonyBarFrame, "Setup", LoadPowerBars) -- Required for WW Monk
+    self:SecureHook(WarlockShardMixin, "Setup", LoadPowerBars) -- Required for Warlock
+    self:SecureHook(ComboPointDruidPlayerFrame, "Setup", LoadPowerBars) -- Required for Feral Druid
+    --self:Hook(EssencePlayerFrame, "Setup", LoadPowerBars, true)
 end
 
 function LoadPowerBars()
@@ -43,7 +43,6 @@ function BHH:ProcessSlashCommand(input)
     end
 end
 
-
 function BHH:HidePowerBars()
     if playerClass == 'Paladin' then
         PaladinPowerBarFrame:Hide()
@@ -55,6 +54,7 @@ function BHH:HidePowerBars()
         ComboPointDruidPlayerFrame:Hide()
     elseif playerClass == 'Monk' then
         MonkHarmonyBarFrame:Hide()
+        MonkStaggerBar:Hide() -- not working
     elseif playerClass == 'Death Knight' then
         RuneFrame:Hide()
     end
