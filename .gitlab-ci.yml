@@ -13,5 +13,6 @@ push release to wow interface:
   except:
     - branches
   script:
-    - zip BlizzHUD_Helper.zip BlizzHUD_Helper.lua BlizzHUD_Helper.toc
+    - mkdir BlizzHUDHelper && cp -ar BlizzHUD_Helper.lua BlizzHUD_Helper.toc embeds.xml libs/ BlizzHUDHelper
+    - zip -r BlizzHUDHelper.zip BlizzHUDHelper
     - $WOW_INTERFACE_DEPLOY_JOB
