@@ -16,17 +16,16 @@ push release to wow interface:
   script:
     - upload_to_wow_interface.sh
 
-push release to curseforge:
-  when: never
-  image: registry.gitlab.com/jonnynabors/blizzhud_helper
-  stage: build
-  only:
-    - tags
-  except:
-    - branches
-  script:
-    - env
-    - mkdir BlizzHUDHelper && cp -ar BlizzHUD_Helper.lua BlizzHUD_Helper.toc embeds.xml libs/ BlizzHUDHelper
-    - zip -r BlizzHUDHelper.zip BlizzHUDHelper
-    - echo $CURSE_UPLOAD_NEW_VERSION_JOB
-    - $CURSE_UPLOAD_NEW_VERSION_JOB
+#push release to curseforge:
+#  image: registry.gitlab.com/jonnynabors/blizzhud_helper
+#  stage: build
+#  only:
+#    - tags
+#  except:
+#    - branches
+#  script:
+#    - env
+#    - mkdir BlizzHUDHelper && cp -ar BlizzHUD_Helper.lua BlizzHUD_Helper.toc embeds.xml libs/ BlizzHUDHelper
+#    - zip -r BlizzHUDHelper.zip BlizzHUDHelper
+#    - echo $CURSE_UPLOAD_NEW_VERSION_JOB
+#    - $CURSE_UPLOAD_NEW_VERSION_JOB
