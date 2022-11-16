@@ -25,4 +25,4 @@ push release to curseforge:
     - branches
   script:
     - bundle_addon.sh
-    - curl -H "x-api-token:$CURSEFORGE_TOKEN" https://wow.curseforge.com/api/projects/$CURSEFORGE_PROJECT_ID/upload-file -F metadata="{\"changelog\":\"$CI_COMMIT_TAG_MESSAGE\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUDHelper.zip
+    - curl -H "x-api-token:$CURSEFORGE_TOKEN" https://wow.curseforge.com/api/projects/$CURSEFORGE_PROJECT_ID/upload-file -F metadata="{\"changelog\":\"$CI_COMMIT_TAG_MESSAGE\",\"gameVersions\":[9493,9494],\"releaseType\":\"release\"}" -F file=@BlizzHUD_Helper.zip
