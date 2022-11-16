@@ -1,7 +1,26 @@
 BHH = LibStub("AceAddon-3.0"):NewAddon("BlizzHUD_Helper", "AceConsole-3.0", "AceHook-3.0")
+
 local playerClass, englishClass = UnitClass("player");
 
+local options = {
+    name = "BlizzHUD_Helper",
+    handler = BHH,
+    type = 'group',
+    args = {
+        msg = {
+            type = 'toggle',
+            name = 'Hide Character Power Bars',
+            desc = "Toggle to show/hide your character's combo points, holy power, etc.",
+            width = "full",
+            get = 'GetShowHidePowerBars',
+            set = 'SetShowHidePowerBars',
+        },
+    },
+}
+
 function BHH:OnInitialize()
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("BlizzHUD_Helper", options, {"bhh"})
+    self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BlizzHUD_Helper", "BlizzHUD Helper")
     BHH:RegisterChatCommand("bhh", "ProcessSlashCommand")
 
     local frame = CreateFrame('FRAME')
@@ -33,6 +52,11 @@ function LoadPowerBars()
 end
 
 function BHH:ProcessSlashCommand(input)
+    if not input or input:trim() == "" then
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
+    end
+
     if (input == "show") then
         ShowHidePowerBars = "show"
         self:ShowPowerBars()
@@ -80,3 +104,17 @@ function BHH:ShowPowerBars()
     end
 end
 
+
+function BHH:GetShowHidePowerBars(info)
+    return ShowHidePowerBars == "hide"
+end
+
+function BHH:SetShowHidePowerBars(info, input)
+    if(input == true) then
+        ShowHidePowerBars = 'hide'
+        self:HidePowerBars()
+    else
+        ShowHidePowerBars = 'show'
+        self:ShowPowerBars()
+    end
+end
