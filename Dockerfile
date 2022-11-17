@@ -6,4 +6,4 @@ COPY bundle_addon.sh /usr/local/bin
 
 # For testing purposes only, these are unused during actual build time
 COPY libs libs/
-COPY embeds.xml BlizzHUD* .
+COPY embeds.xml Options.lua BlizzHUD* .
