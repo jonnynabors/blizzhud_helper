@@ -12,8 +12,8 @@ local options = {
             name = 'Hide Character Power Bars',
             desc = "Toggle to show/hide your character's combo points, holy power, etc.",
             width = "full",
-            get = 'GetShowHidePowerBars',
-            set = 'SetShowHidePowerBars',
+            get = 'GetHidePowerBars',
+            set = 'SetHidePowerBars',
         },
         friendly_health_bars = {
             type = 'toggle',
@@ -50,23 +50,24 @@ end
 -- Called when a profile is changed
 function BHH:RefreshConfig()
     self:ResizeFriendlyNameplates()
-    LoadPowerBars()
+    self:LoadPowerBars()
 end
 
 function BHH:OnEnable()
     self:ResizeFriendlyNameplates()
-    self:SecureHook(ClassPowerBar, "Setup", LoadPowerBars) -- Required for Paladin, specifically swapping specs
-    self:SecureHook(ComboPointPlayerFrame, "Setup", LoadPowerBars) -- Required for Rogue, DK
-    self:SecureHook(MonkHarmonyBarFrame, "Setup", LoadPowerBars) -- Required for WW Monk
-    self:SecureHook(WarlockShardMixin, "Setup", LoadPowerBars) -- Required for Warlock
-    self:SecureHook(ComboPointDruidPlayerFrame, "Setup", LoadPowerBars) -- Required for Feral Druid
-    self:SecureHook(EssencePlayerFrame, "Setup", LoadPowerBars) -- Required for Evoker
+    self:LoadPowerBars()
+    self:SecureHook(ClassPowerBar, "Setup", self.LoadPowerBars) -- Required for Paladin, specifically swapping specs
+    self:SecureHook(ComboPointPlayerFrame, "Setup", self.LoadPowerBars) -- Required for Rogue, DK
+    self:SecureHook(MonkHarmonyBarFrame, "Setup", self.LoadPowerBars) -- Required for WW Monk
+    self:SecureHook(WarlockShardMixin, "Setup", self.LoadPowerBars) -- Required for Warlock
+    self:SecureHook(ComboPointDruidPlayerFrame, "Setup", self.LoadPowerBars) -- Required for Feral Druid
+    self:SecureHook(EssencePlayerFrame, "Setup", self.LoadPowerBars) -- Required for Evoker
 end
 
-function LoadPowerBars()
-    if ShowHidePowerBars == 'show' then
+function BHH:LoadPowerBars()
+    if BHH.db.profile.hidePowerBars == false then
         BHH:ShowPowerBars()
-    elseif ShowHidePowerBars == 'hide' then
+    elseif BHH.db.profile.hidePowerBars == true then
         BHH:HidePowerBars()
     end
 end
@@ -78,10 +79,10 @@ function BHH:ProcessSlashCommand(input)
     end
 
     if (input == "show") then
-        ShowHidePowerBars = "show"
+        self.db.profile.hidePowerBars = false
         self:ShowPowerBars()
     elseif (input == "hide") then
-        ShowHidePowerBars = "hide"
+        self.db.profile.hidePowerBars = true
         self:HidePowerBars()
     else
     end
@@ -124,16 +125,16 @@ function BHH:ShowPowerBars()
     end
 end
 
-function BHH:GetShowHidePowerBars(info)
-    return ShowHidePowerBars == "hide"
+function BHH:GetHidePowerBars(info)
+    return self.db.profile.hidePowerBars
 end
 
-function BHH:SetShowHidePowerBars(info, input)
+function BHH:SetHidePowerBars(info, input)
     if (input == true) then
-        ShowHidePowerBars = 'hide'
+        self.db.profile.hidePowerBars = true
         self:HidePowerBars()
     else
-        ShowHidePowerBars = 'show'
+        self.db.profile.hidePowerBars = false
         self:ShowPowerBars()
     end
 end
@@ -148,9 +149,11 @@ function BHH:SetSmallerNameplates(info, input)
 end
 
 function BHH:ResizeFriendlyNameplates()
-    if self.db.profile.showSmallerNameplates == true then -- make smaller
+    if self.db.profile.showSmallerNameplates == true then
+        -- make smaller
         C_NamePlate.SetNamePlateFriendlySize(60, 30)
-    else -- reset to default size
+    else
+        -- reset to default size
         C_NamePlate.SetNamePlateFriendlySize(100, 100)
     end
 end
