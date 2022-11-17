@@ -2,32 +2,8 @@ BHH = LibStub("AceAddon-3.0"):NewAddon("BlizzHUD_Helper", "AceConsole-3.0", "Ace
 
 local playerClass, englishClass = UnitClass("player");
 
-local options = {
-    name = "BlizzHUD_Helper",
-    handler = BHH,
-    type = 'group',
-    args = {
-        power_bars = {
-            type = 'toggle',
-            name = 'Hide Character Power Bars',
-            desc = "Toggle to show/hide your character's combo points, holy power, etc.",
-            width = "full",
-            get = 'GetHidePowerBars',
-            set = 'SetHidePowerBars',
-        },
-        friendly_health_bars = {
-            type = 'toggle',
-            name = 'Use smaller friendly nameplates',
-            desc = "Healthbars on friendly nameplates will appear much smaller",
-            width = "full",
-            get = 'GetSmallerNameplates',
-            set = 'SetSmallerNameplates',
-        }
-    },
-}
-
 function BHH:OnInitialize()
-    LibStub("AceConfig-3.0"):RegisterOptionsTable("BlizzHUD_Helper", options, { "bhh" })
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("BlizzHUD_Helper", self.options, { "bhh" })
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BlizzHUD_Helper", "BlizzHUD Helper")
     self.db = LibStub("AceDB-3.0"):New("BHH_DB", defaults, false)
     BHH:RegisterChatCommand("bhh", "ProcessSlashCommand")
@@ -38,7 +14,7 @@ function BHH:OnInitialize()
     self.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
     local frame = CreateFrame('FRAME')
     frame:RegisterEvent('ADDON_LOADED')
-
+    frame:RegisterEvent('PLAYER_ENTERING_WORLD')
     frame:SetScript("OnEvent", function(this, event, ...)
         BHH[event](BHH, ...)
     end)
@@ -47,15 +23,21 @@ end
 function BHH:ADDON_LOADED()
 end
 
+function BHH:PLAYER_ENTERING_WORLD()
+    -- possibly resize unit frames here
+end
+
 -- Called when a profile is changed
 function BHH:RefreshConfig()
     self:ResizeFriendlyNameplates()
     self:LoadPowerBars()
+    self:DisplayCharacterNameplate()
 end
 
 function BHH:OnEnable()
     self:ResizeFriendlyNameplates()
     self:LoadPowerBars()
+    self:DisplayCharacterNameplate()
     self:SecureHook(ClassPowerBar, "Setup", self.LoadPowerBars) -- Required for Paladin, specifically swapping specs
     self:SecureHook(ComboPointPlayerFrame, "Setup", self.LoadPowerBars) -- Required for Rogue, DK
     self:SecureHook(MonkHarmonyBarFrame, "Setup", self.LoadPowerBars) -- Required for WW Monk
@@ -125,29 +107,6 @@ function BHH:ShowPowerBars()
     end
 end
 
-function BHH:GetHidePowerBars(info)
-    return self.db.profile.hidePowerBars
-end
-
-function BHH:SetHidePowerBars(info, input)
-    if (input == true) then
-        self.db.profile.hidePowerBars = true
-        self:HidePowerBars()
-    else
-        self.db.profile.hidePowerBars = false
-        self:ShowPowerBars()
-    end
-end
-
-function BHH:GetSmallerNameplates(info)
-    return self.db.profile.showSmallerNameplates
-end
-
-function BHH:SetSmallerNameplates(info, input)
-    self.db.profile.showSmallerNameplates = input
-    self:ResizeFriendlyNameplates()
-end
-
 function BHH:ResizeFriendlyNameplates()
     if self.db.profile.showSmallerNameplates == true then
         -- make smaller
@@ -155,5 +114,13 @@ function BHH:ResizeFriendlyNameplates()
     else
         -- reset to default size
         C_NamePlate.SetNamePlateFriendlySize(100, 100)
+    end
+end
+
+function BHH:DisplayCharacterNameplate()
+    if self.db.profile.hideCharacterNameplate then
+        PlayerFrame:Hide()
+    else
+        PlayerFrame:Show()
     end
 end

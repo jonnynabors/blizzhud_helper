@@ -7,3 +7,4 @@
 embeds.xml
 
 BlizzHUD_Helper.lua
+Options.lua
