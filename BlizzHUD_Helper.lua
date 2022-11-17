@@ -1,4 +1,4 @@
-BHH = LibStub("AceAddon-3.0"):NewAddon("BlizzHUD_Helper", "AceConsole-3.0", "AceHook-3.0")
+BHH = LibStub("AceAddon-3.0"):NewAddon("BlizzHUD_Helper", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0")
 
 local playerClass, englishClass = UnitClass("player");
 
@@ -35,7 +35,7 @@ function BHH:OnInitialize()
     local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
     LibStub("AceConfig-3.0"):RegisterOptionsTable("BHH_Profiles", profiles)
     LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BHH_Profiles", "Profiles", "BlizzHUD Helper")
-
+    self.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
     local frame = CreateFrame('FRAME')
     frame:RegisterEvent('ADDON_LOADED')
 
@@ -45,6 +45,12 @@ function BHH:OnInitialize()
 end
 
 function BHH:ADDON_LOADED()
+end
+
+-- Called when a profile is changed
+function BHH:RefreshConfig()
+    self:ResizeFriendlyNameplates()
+    LoadPowerBars()
 end
 
 function BHH:OnEnable()
