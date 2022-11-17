@@ -7,7 +7,7 @@ local options = {
     handler = BHH,
     type = 'group',
     args = {
-        msg = {
+        power_bars = {
             type = 'toggle',
             name = 'Hide Character Power Bars',
             desc = "Toggle to show/hide your character's combo points, holy power, etc.",
@@ -15,13 +15,26 @@ local options = {
             get = 'GetShowHidePowerBars',
             set = 'SetShowHidePowerBars',
         },
+        friendly_health_bars = {
+            type = 'toggle',
+            name = 'Use smaller friendly nameplates',
+            desc = "Healthbars on friendly nameplates will appear much smaller",
+            width = "full",
+            get = 'GetSmallerNameplates',
+            set = 'SetSmallerNameplates',
+        }
     },
 }
 
 function BHH:OnInitialize()
-    LibStub("AceConfig-3.0"):RegisterOptionsTable("BlizzHUD_Helper", options, {"bhh"})
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("BlizzHUD_Helper", options, { "bhh" })
     self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BlizzHUD_Helper", "BlizzHUD Helper")
+    self.db = LibStub("AceDB-3.0"):New("BHH_DB", defaults, false)
     BHH:RegisterChatCommand("bhh", "ProcessSlashCommand")
+
+    local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+    LibStub("AceConfig-3.0"):RegisterOptionsTable("BHH_Profiles", profiles)
+    LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BHH_Profiles", "Profiles", "BlizzHUD Helper")
 
     local frame = CreateFrame('FRAME')
     frame:RegisterEvent('ADDON_LOADED')
@@ -35,6 +48,7 @@ function BHH:ADDON_LOADED()
 end
 
 function BHH:OnEnable()
+    self:ResizeFriendlyNameplates()
     self:SecureHook(ClassPowerBar, "Setup", LoadPowerBars) -- Required for Paladin, specifically swapping specs
     self:SecureHook(ComboPointPlayerFrame, "Setup", LoadPowerBars) -- Required for Rogue, DK
     self:SecureHook(MonkHarmonyBarFrame, "Setup", LoadPowerBars) -- Required for WW Monk
@@ -104,17 +118,33 @@ function BHH:ShowPowerBars()
     end
 end
 
-
 function BHH:GetShowHidePowerBars(info)
     return ShowHidePowerBars == "hide"
 end
 
 function BHH:SetShowHidePowerBars(info, input)
-    if(input == true) then
+    if (input == true) then
         ShowHidePowerBars = 'hide'
         self:HidePowerBars()
     else
         ShowHidePowerBars = 'show'
         self:ShowPowerBars()
+    end
+end
+
+function BHH:GetSmallerNameplates(info)
+    return self.db.profile.showSmallerNameplates
+end
+
+function BHH:SetSmallerNameplates(info, input)
+    self.db.profile.showSmallerNameplates = input
+    self:ResizeFriendlyNameplates()
+end
+
+function BHH:ResizeFriendlyNameplates()
+    if self.db.profile.showSmallerNameplates == true then -- make smaller
+        C_NamePlate.SetNamePlateFriendlySize(60, 30)
+    else -- reset to default size
+        C_NamePlate.SetNamePlateFriendlySize(100, 100)
     end
 end

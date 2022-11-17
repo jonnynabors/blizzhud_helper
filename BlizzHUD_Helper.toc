@@ -1,7 +1,7 @@
 ## Interface: 100002
 ## Title: BlizzHUD Helper
 ## Notes: Adds additional functionality to the new-as-of-Dragonflight UI Overhaul
-## SavedVariablesPerCharacter: ShowHidePowerBars
+## SavedVariablesPerCharacter: ShowHidePowerBars BHH_DB
 ## Author: Jonny Nabors
 
 embeds.xml
