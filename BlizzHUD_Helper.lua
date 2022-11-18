@@ -24,6 +24,8 @@ function BHH:ADDON_LOADED()
 end
 
 function BHH:PLAYER_ENTERING_WORLD()
+    local inInstance, instanceType = IsInInstance() -- possibly reuse later
+    self:ResizeFriendlyNameplates()
     -- possibly resize unit frames here
 end
 
