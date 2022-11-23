@@ -12,6 +12,7 @@ function BHH:OnInitialize()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("BHH_Profiles", profiles)
     LibStub("AceConfigDialog-3.0"):AddToBlizOptions("BHH_Profiles", "Profiles", "BlizzHUD Helper")
     self.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
+
     local frame = CreateFrame('FRAME')
     frame:RegisterEvent('ADDON_LOADED')
     frame:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -25,7 +26,7 @@ end
 
 function BHH:PLAYER_ENTERING_WORLD()
     local inInstance, instanceType = IsInInstance() -- possibly reuse later
-    self:ResizeFriendlyNameplates()
+    self:RefreshConfig()
     -- possibly resize unit frames here
 end
 
