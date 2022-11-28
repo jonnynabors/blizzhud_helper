@@ -47,6 +47,9 @@ function BHH:OnEnable()
     self:SecureHook(WarlockShardMixin, "Setup", self.LoadPowerBars) -- Required for Warlock
     self:SecureHook(ComboPointDruidPlayerFrame, "Setup", self.LoadPowerBars) -- Required for Feral Druid
     self:SecureHook(EssencePlayerFrame, "Setup", self.LoadPowerBars) -- Required for Evoker
+
+    self:SecureHook(CharacterFrame, "Hide", self.LoadPowerBars)
+    self:SecureHook(CharacterFrame, "Show", self.LoadPowerBars)
 end
 
 function BHH:LoadPowerBars()
@@ -103,6 +106,7 @@ function BHH:ShowPowerBars()
         ComboPointDruidPlayerFrame:Show()
     elseif playerClass == 'Monk' then
         MonkHarmonyBarFrame:Show()
+        MonkStaggerBar:Show()
     elseif playerClass == 'Death Knight' then
         RuneFrame:Show()
     elseif playerClass == 'Evoker' then
