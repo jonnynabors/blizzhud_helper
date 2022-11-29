@@ -16,6 +16,7 @@ function BHH:OnInitialize()
     local frame = CreateFrame('FRAME')
     frame:RegisterEvent('ADDON_LOADED')
     frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+    frame:RegisterEvent('CINEMATIC_STOP')
     frame:SetScript("OnEvent", function(this, event, ...)
         BHH[event](BHH, ...)
     end)
@@ -28,6 +29,10 @@ function BHH:PLAYER_ENTERING_WORLD()
     local inInstance, instanceType = IsInInstance() -- possibly reuse later
     self:RefreshConfig()
     -- possibly resize unit frames here
+end
+
+function BHH:CINEMATIC_STOP()
+    self:RefreshConfig()
 end
 
 -- Called when a profile is changed
