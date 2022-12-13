@@ -17,6 +17,8 @@ function BHH:OnInitialize()
     frame:RegisterEvent('ADDON_LOADED')
     frame:RegisterEvent('PLAYER_ENTERING_WORLD')
     frame:RegisterEvent('CINEMATIC_STOP')
+    frame:RegisterEvent('CLIENT_SCENE_CLOSED') -- seems to happen when you leave a major city/zone
+    frame:RegisterEvent('CLIENT_SCENE_OPENED') -- seems to happen upon reentry to a major city/zone
     frame:SetScript("OnEvent", function(this, event, ...)
         BHH[event](BHH, ...)
     end)
@@ -32,6 +34,14 @@ function BHH:PLAYER_ENTERING_WORLD()
 end
 
 function BHH:CINEMATIC_STOP()
+    self:RefreshConfig()
+end
+
+function BHH:CLIENT_SCENE_CLOSED()
+    self:RefreshConfig()
+end
+
+function BHH:CLIENT_SCENE_OPENED()
     self:RefreshConfig()
 end
 
